@@ -15,6 +15,7 @@
 \usepackage{amsthm}
 \usepackage{tabularx,colortbl}
 \usepackage{multirow}
+\usepackage{cite}
 
 \theoremstyle{definition}
 \newtheorem{myexample}{Example}
@@ -85,7 +86,11 @@
 \end{frame}
 
 \begin{frame}{Data Cubes}
-    What if we aggregate the data into a multi-dimensional array?
+
+\end{frame}
+
+\begin{frame}{Data Cubes}
+    We can aggregate the data into a multi-dimensional array.\cite{Gray96}
 
     \begin{table}[h]\footnotesize
         \begin{tabular} { | l | l | l | l | l | l | l | l | l |}
@@ -168,7 +173,10 @@
 
 \end{frame}
 
-
+\begin{frame}
+\bibliography{slides}{}
+\bibliographystyle{plain}
+\end{frame}
 
 %\begin{frame}{The Range-Sum Problem}
 %\textbf{Range queries} ``apply a given aggregation operation over selected cells where the selection is specified as contiguous ranges in the domains of some of the attributes''
