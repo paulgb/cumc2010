@@ -1,0 +1,199 @@
+% slides.tex
+
+\documentclass{beamer}
+\usetheme{default}
+
+\title{Data Structures for Range-Sum Queries}
+\subtitle{The Evolution of the Data Cube}
+\author{Paul Butler}
+\institute{
+    CUMC 2010\\
+    Waterloo, Ontario
+}
+\date{July 2010}
+
+\usepackage{amsthm}
+\usepackage{tabularx,colortbl}
+\usepackage{multirow}
+
+\theoremstyle{definition}
+\newtheorem{myexample}{Example}
+\theoremstyle{definition}
+\newtheorem{mynote}{Note}
+
+\begin{document}
+
+\begin{frame}[plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{The Range-Sum Problem: Example}
+    \begin{table}[h]\footnotesize
+        \begin{tabular}{ | l | l | l | l | l | l |}
+        \hline
+        \rowcolor{red!20!green!20!blue!20}
+        \textbf{Name} & \textbf{DOB} & \textbf{City} & \textbf{Height} & \textbf{Siblings} & \textbf{Pets} \\ \hline
+        Joseph Matthews & Jan 9, 1987 & Waterloo & 172 & 2 &  1 \\ \hline
+        Sarah Farmer & Nov 17, 1988 & Halifax & 167 & 0 & 2 \\ \hline
+        \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\ \hline
+        \end{tabular}
+    \end{table}
+
+    \begin{itemize}
+        \item How many people in Vancouver were born before 1990?
+        \item What is the average number of siblings for people above 170 cm?
+        \item What is the total number of pets owned by people 18 to 24 in Calgary?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The Range-Sum Problem: Definitions}
+    \begin{definition}[Measure]
+        A column whose values we want to aggregate in our queries.
+    \end{definition}
+    \begin{myexample}
+        The \textbf{Pets} and \textbf{Siblings} columns from the last example are \textbf{measures}
+    \end{myexample}
+    \begin{definition}[Dimension]
+        A column we want to use to select columns which belong to our aggregation.
+    \end{definition}
+    \begin{myexample}
+        The \textbf{DOB}, \textbf{City}, and \textbf{Height} columns are \textbf{dimensions}.
+    \end{myexample}
+\end{frame}
+
+\begin{frame}{Dimensions vs. Measures}
+    \begin{itemize}
+        \item For each column, \textbf{dimension} vs. \textbf{measure} depends on which questions you want to answer.
+        \item \textit{What is the average age of people with two pets}
+        \begin{itemize}
+            \item \textbf{DOB} would be a \textbf{measure}
+            \item \textbf{Pets} would be a \textbf{dimension}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The Na\"{i}ve Approach}
+    \begin{itemize}
+        \item Store the data as a table
+        \item For every row:
+        \begin{itemize}
+            \item If the dimension columns match our query, add the value in the measure column to a running total
+        \end{itemize}
+        \item Return the running total
+    \end{itemize}
+    \textbf{Too slow} for large amounts of data!
+\end{frame}
+
+\begin{frame}{Data Cubes}
+    What if we aggregate the data into a multi-dimensional array?
+
+    \begin{table}[h]\footnotesize
+        \begin{tabular} { | l | l | l | l | l | l | l | l | l |}
+        \hline
+        & & \multicolumn{7}{|c|}{DOB} \\ \hline
+        & & $\hdots$ & 1985 & 1986 & 1987 & 1988 & 1989 & $\hdots$ \\ \hline
+        \multirow{6}{*}{Height}
+        & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ \\
+        & 165 & $\hdots$ & 192 & 342 & 558 & 56 & 591 & $\hdots$ \\
+        & 166 & $\hdots$ & 325 & 275 & 707 & 855 & 484 & $\hdots$ \\
+        & 167 & $\hdots$ & 487 & 326 & 363 & 193 & 350 & $\hdots$ \\
+        & 168 & $\hdots$ & 326 & 363 & 193 & 350 & 422 & $\hdots$ \\
+        & 169 & $\hdots$ & 438 & 456 & 550 & 385 & 412 & $\hdots$ \\
+        & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ \\
+        \hline
+        \end{tabular}
+    \end{table}
+
+    Now cells not selected by the query are ignored. \\
+    Less lookups, faster queries (but still too slow).
+\end{frame}
+
+\begin{frame}{Data Cubes}
+    What if we calculate partial sums?
+    \begin{table}[h]\footnotesize
+        \begin{tabular} { | l | l | l | l | l | l | l | l | l | l |}
+        \hline
+        & & \multicolumn{8}{|c|}{DOB} \\ \hline
+        & & $\hdots$ & 1985 & 1986 & 1987 & 1988 & 1989 & $\hdots$ & Sum \\ \hline
+        \multirow{7}{*}{Height}
+        & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ & \vdots \\
+        & 165 & $\hdots$ & 192 & 342 & 558 & 56 & 591 & $\hdots$ & 10937 \\
+        & 166 & $\hdots$ & 325 & 275 & 707 & 855 & 484 & $\hdots$ & 10998 \\
+        & 167 & $\hdots$ & 487 & 326 & 363 & 193 & 350 & $\hdots$ & 11064 \\
+        & 168 & $\hdots$ & 326 & 363 & 193 & 350 & 422 & $\hdots$ & 10913 \\
+        & 169 & $\hdots$ & 438 & 456 & 550 & 385 & 412 & $\hdots$ & 11347 \\
+        & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ & \vdots \\
+        & Sum & $\hdots$ & 8121 & 8255 & 8206 & 8820 & 8026 & $\hdots$ & 202169 \\
+        \hline
+        \end{tabular}
+    \end{table}
+
+    Queries which only mention \textit{some} dimensions run faster.
+\end{frame}
+
+\begin{frame}{Data Cubes}
+    \begin{myexample}
+        How many dogs are owned by people born between 1986 and 1988 (inclusive)?
+    \end{myexample}
+
+    \begin{table}[h]\footnotesize
+        \begin{tabular} { | l | l | l | l | l | l | l | l | l | l |}
+        \hline
+        & & \multicolumn{8}{|c|}{DOB} \\ \hline
+        & & $\hdots$ & 1985 & 1986 & 1987 & 1988 & 1989 & $\hdots$ & Sum \\ \hline
+        \multirow{7}{*}{Height}
+        & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ & \vdots \\
+        & 165 & $\hdots$ & 192 & 342 & 558 & 56 & 591 & $\hdots$ & 10937 \\
+        & 166 & $\hdots$ & 325 & 275 & 707 & 855 & 484 & $\hdots$ & 10998 \\
+        & 167 & $\hdots$ & 487 & 326 & 363 & 193 & 350 & $\hdots$ & 11064 \\
+        & 168 & $\hdots$ & 326 & 363 & 193 & 350 & 422 & $\hdots$ & 10913 \\
+        & 169 & $\hdots$ & 438 & 456 & 550 & 385 & 412 & $\hdots$ & 11347 \\
+        & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ & \vdots \\
+        & Sum & $\hdots$ & 8121 & \textbf{8255} & \textbf{8206} & \textbf{8820} & 8026 & $\hdots$ & 202169 \\
+        \hline
+        \end{tabular}
+    \end{table}
+    8255 + 8206 + 8820 = \textbf{25281}
+\end{frame}
+
+\begin{frame}{Prefix-Sum Table}
+
+\end{frame}
+
+\begin{frame}{Relative Prefix-Sum Table}
+
+\end{frame}
+
+\begin{frame}{$\Delta$-tree}
+
+\end{frame}
+
+
+
+%\begin{frame}{The Range-Sum Problem}
+%\textbf{Range queries} ``apply a given aggregation operation over selected cells where the selection is specified as contiguous ranges in the domains of some of the attributes''
+%\end{frame}
+
+
+\begin{frame}{My Slide}
+A displayed formula:
+\[
+    \int_{-\infty}^\infty e^{-x^2} \, dx = \sqrt{\pi}
+\]
+
+An itemized list:
+\begin{itemize}
+    \item itemized item 1
+    \item itemized item 2
+    \item itemized item 3
+\end{itemize}
+
+\begin{theorem}
+    In a right triangle, the square of hypotenuse equals
+    the sum of squares of two other sides.
+\end{theorem}
+
+\end{frame}
+
+\end{document}
+
