@@ -16,6 +16,7 @@
 \usepackage{tabularx,colortbl}
 \usepackage{multirow}
 \usepackage{cite}
+\usepackage{subfigure}
 
 \theoremstyle{definition}
 \newtheorem{myexample}{Example}
@@ -86,10 +87,6 @@
 \end{frame}
 
 \begin{frame}{Data Cubes}
-
-\end{frame}
-
-\begin{frame}{Data Cubes}
     We can aggregate the data into a multi-dimensional array.\cite{Gray96}
 
     \begin{table}[h]\footnotesize
@@ -114,7 +111,7 @@
 \end{frame}
 
 \begin{frame}{Data Cubes}
-    What if we calculate partial sums?
+    We can calculate partial sums for each row, column, etc.\cite{Gray96}
     \begin{table}[h]\footnotesize
         \begin{tabular} { | l | l | l | l | l | l | l | l | l | l |}
         \hline
@@ -162,7 +159,58 @@
 \end{frame}
 
 \begin{frame}{Prefix-Sum Table}
+    Observation: range sums can be computed as a sum of range queries starting from 0.\cite{Ho97}
 
+\begin{figure}
+    \centering
+    \subfigure{
+    \begin{tabular}{ | l | l | l |}
+        \hline
+         & & \\ \hline
+         & \cellcolor{blue} & \\ \hline
+         & & \\ \hline
+    \end{tabular}
+
+    }
+    \subfigure{=}
+    \subfigure{
+    \begin{tabular}{ | l | l | l |}
+        \hline
+         \cellcolor{blue} & \cellcolor{blue} & \\ \hline
+         \cellcolor{blue} & \cellcolor{blue} & \\ \hline
+         & & \\ \hline
+    \end{tabular}
+    }
+    \subfigure{-}
+    \subfigure{
+
+    \begin{tabular}{ | l | l | l |}
+        \hline
+         \cellcolor{blue} & \cellcolor{blue} & \\ \hline
+         & & \\ \hline
+         & & \\ \hline
+    \end{tabular}
+    }
+    \subfigure{-}
+    \subfigure{
+    \begin{tabular}{ | l | l | l |}
+        \hline
+         \cellcolor{blue} & & \\ \hline
+         \cellcolor{blue} & & \\ \hline
+         & & \\ \hline
+    \end{tabular}
+    }
+    \subfigure{+}
+    \subfigure{
+
+    \begin{tabular}{ | l | l | l |}
+        \hline
+         \cellcolor{blue} & & \\ \hline
+         & & \\ \hline
+         & & \\ \hline
+    \end{tabular}
+    }
+\end{figure}
 \end{frame}
 
 \begin{frame}{Relative Prefix-Sum Table}
