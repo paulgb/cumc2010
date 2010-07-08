@@ -275,8 +275,52 @@ introduced two new tables
 \cite{Geffner99}
 \end{frame}
 
-\begin{frame}{Dynamic Data Cube}
+\newcommand{\graycell}{\cellcolor[gray]{0.8}}
 
+\begin{frame}{Dynamic Data Cube}
+\begin{figure}
+    \centering
+    \subfigure{
+    Root:
+    \begin{tabular}{ | l l l l | l l l l |}
+        \hline
+        \graycell Q  & \graycell & \graycell & \graycell 11 & \graycell R  & \graycell & \graycell & 15 \\
+        \graycell & \graycell & \graycell & \graycell 29 & \graycell & \graycell & \graycell & 33 \\
+        \graycell & \graycell & \graycell & \graycell 40 & \graycell & \graycell & \graycell & 48 \\
+        \graycell 15 & \graycell 29 & \graycell 35 & \graycell \textbf{51} & \graycell 16 & \graycell 35 & \graycell \textbf{48} & 66 \\
+        \hline
+        \graycell S  & \graycell    & \graycell    & \graycell 10 & {\color{brown} \textbf{T}}  &    &    & 15 \\
+        \graycell & \graycell  & \graycell    & \graycell \textbf{24} &    &    &  {\color{red} *} & 31 \\
+           &    &    & 42 &    &    &    & 47 \\
+        12 & 26 & 34 & 52 &  8 & 30 & 54 & 61 \\
+        \hline
+    \end{tabular}
+    }
+
+    {\color{brown} \textbf{T}}:
+    \subfigure{
+    \begin{tabular}{ | l l | l l |}
+        \hline
+        \graycell U & \graycell 7 & \graycell {\color{blue} \textbf{V}} & 8 \\
+        \graycell 4 & \graycell  \textbf{16} & \graycell \textbf{12}{\color{red} *} & 15 \\
+        \hline
+        W & 10 & Z & 6 \\
+        4 & 14 & 12 & 16 \\
+        \hline
+    \end{tabular}
+    }
+    {\color{blue} \textbf{V}}:
+    \subfigure{
+    \begin{tabular}{ | l | l |}
+        \hline
+        7 & 1 \\
+        \hline
+        5{\color{red} *} & 2 \\
+        \hline
+    \end{tabular}
+    }
+\end{figure}
+\cite{Geffner00}
 \end{frame}
 
 
@@ -285,6 +329,7 @@ introduced two new tables
 \end{frame}
 
 \begin{frame}
+\footnotesize
 \bibliography{slides}{}
 \bibliographystyle{plain}
 \end{frame}
