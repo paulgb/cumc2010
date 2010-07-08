@@ -36,7 +36,7 @@
         \rowcolor{red!20!green!20!blue!20}
         \textbf{Name} & \textbf{DOB} & \textbf{City} & \textbf{Height} & \textbf{Siblings} & \textbf{Pets} \\ \hline
         Joseph Matthews & Jan 9, 1987 & Waterloo & 172 & 2 &  1 \\ \hline
-        Sarah McFarmer & Nov 17, 1988 & Halifax & 167 & 0 & 2 \\ \hline
+        Sarah MacDonald & Nov 17, 1988 & Halifax & 167 & 0 & 2 \\ \hline
         \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\ \hline
         \end{tabular}
     \end{table}
@@ -164,6 +164,11 @@
     8255 + 8206 + 8820 = \textbf{25281}
 \end{frame}
 
+\begin{frame}
+    With \textbf{Data Cubes}, the question becomes \\
+    \textit{How do we find the sum of values which fall inside a given (hyper)rectangle in a multidimensional array?}
+\end{frame}
+
 \begin{frame}{Prefix-Sum Table}
     Observation: range sums can be computed as a sum of four range queries starting from 0.\cite{Ho97}
 
@@ -221,6 +226,11 @@
 In general: $\leq 2^d$ operations, where $d$ is number of dimensions.
 \end{frame}
 
+\begin{frame}
+    With \textbf{Prefix-Sum Tables}, the question becomes \\
+    \textit{How do we find the sum of values which fall inside a given (hyper)rectangle in a multidimensional array {\color{blue} with one corner fixed at the origin}?}
+\end{frame}
+
 \begin{frame}{Prefix-Sum Table}
 \includegraphics[scale=0.5]{prefixtable.png}
 \cite{Geffner99}
@@ -265,6 +275,11 @@ introduced two new tables
 \cite{Geffner99}
 \end{frame}
 
+\begin{frame}{Dynamic Data Cube}
+
+\end{frame}
+
+
 \begin{frame}{$\Delta$-tree}
 
 \end{frame}
@@ -282,11 +297,8 @@ introduced two new tables
 \textbf{Slides} \\
 \url{github.com/paulgb/cumc2010/raw/master/slides.pdf} \\
 \vspace{1.5em}
-\textbf{Contact} \\
-pbutler@uwaterloo.ca \\
-\vspace{1.5em}
-\textbf{Sage} \\
-sagemath.org
+\textbf{Try Sage!} \\
+\url{sagemath.org}
 \end{frame}
 
 \end{document}
