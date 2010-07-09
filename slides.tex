@@ -23,6 +23,8 @@
 \theoremstyle{definition}
 \newtheorem{mynote}{Note}
 
+\newcommand{\graycell}{\cellcolor[gray]{0.8}}
+
 \begin{document}
 
 \begin{frame}[plain]
@@ -34,7 +36,7 @@
         \begin{tabular}{ | l | l | l | l | l | l |}
         \hline
         \rowcolor{red!20!green!20!blue!20}
-        \textbf{Name} & \textbf{DOB} & \textbf{City} & \textbf{Height} & \textbf{Siblings} & \textbf{Pets} \\ \hline
+        \textbf{Name} & \textbf{Born} & \textbf{City} & \textbf{Height} & \textbf{Siblings} & \textbf{Pets} \\ \hline
         Joseph Matthews & Jan 9, 1987 & Waterloo & 172 & 2 &  1 \\ \hline
         Sarah MacDonald & Nov 17, 1988 & Halifax & 167 & 0 & 2 \\ \hline
         \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\ \hline
@@ -62,7 +64,7 @@
     \end{definition}
     \pause
     \begin{myexample}
-        The \textbf{DOB}, \textbf{City}, and \textbf{Height} columns are \textbf{dimensions}.
+        The \textbf{Born}, \textbf{City}, and \textbf{Height} columns are \textbf{dimensions}.
     \end{myexample}
 \end{frame}
 
@@ -72,7 +74,7 @@
         \item<+-> \textit{What is the average age of people with two pets}
         \pause
         \begin{itemize}
-            \item \textbf{DOB} would be a \textbf{measure}
+            \item \textbf{Born} would be a \textbf{measure}
             \item \textbf{Pets} would be a \textbf{dimension}
         \end{itemize}
     \end{itemize}
@@ -97,7 +99,7 @@
     \begin{table}[h]\footnotesize
         \begin{tabular} { | l | l | l | l | l | l | l | l | l |}
         \hline
-        \textbf{Pets} & & \multicolumn{7}{|c|}{DOB} \\ \hline
+        \textbf{Pets} & & \multicolumn{7}{|c|}{Born} \\ \hline
         & & $\hdots$ & 1985 & 1986 & 1987 & 1988 & 1989 & $\hdots$ \\ \hline
         \multirow{6}{*}{Height}
         & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ \\
@@ -116,11 +118,36 @@
 \end{frame}
 
 \begin{frame}{Data Cubes}
+    \begin{myexample}
+        What is the total number of pets owned by people born between 1986 and 1988 and height between 166 and 168~cm?
+    \end{myexample}
+
+    \begin{table}[h]\footnotesize
+        \begin{tabular} { | l | l | l | l | l | l | l | l | l |}
+        \hline
+        \textbf{Pets} & & \multicolumn{7}{|c|}{Born} \\ \hline
+        & & $\hdots$ & 1985 & 1986 & 1987 & 1988 & 1989 & $\hdots$ \\ \hline
+        \multirow{6}{*}{Height}
+        & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ \\
+        & 165 & $\hdots$ & 192 & 342 & 558 & 56 & 591 & $\hdots$ \\
+        & 166 & $\hdots$ & 325 & \graycell 275 & \graycell 707 & \graycell 855 & 484 & $\hdots$ \\
+        & 167 & $\hdots$ & 487 & \graycell 326 & \graycell 363 & \graycell 193 & 350 & $\hdots$ \\
+        & 168 & $\hdots$ & 326 & \graycell 363 & \graycell 193 & \graycell 350 & 422 & $\hdots$ \\
+        & 169 & $\hdots$ & 438 & 456 & 550 & 385 & 412 & $\hdots$ \\
+        & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ \\
+        \hline
+        \end{tabular}
+    \end{table}
+    \pause
+    275 + 707 + 855 + 326 + 363 + 193 + 363 + 193 + 350 = \textbf{3625}
+\end{frame}
+
+\begin{frame}{Data Cubes}
     We can calculate partial sums for each row, column, etc.\cite{Gray96}
     \begin{table}[h]\footnotesize
         \begin{tabular} { | l | l | l | l | l | l | l | l | l | l |}
         \hline
-        \textbf{Pets} & & \multicolumn{8}{|c|}{DOB} \\ \hline
+        \textbf{Pets} & & \multicolumn{8}{|c|}{Born} \\ \hline
         & & $\hdots$ & 1985 & 1986 & 1987 & 1988 & 1989 & $\hdots$ & Sum \\ \hline
         \multirow{7}{*}{Height}
         & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ & \vdots \\
@@ -135,7 +162,7 @@
         \end{tabular}
     \end{table}
     \pause
-    Queries which only mention a subset of the dimensions run faster.
+    Queries which only mention a subset of the dimensions now run faster.
 \end{frame}
 
 \begin{frame}{Data Cubes}
@@ -146,7 +173,7 @@
     \begin{table}[h]\footnotesize
         \begin{tabular} { | l | l | l | l | l | l | l | l | l | l |}
         \hline
-        \textbf{Pets} & & \multicolumn{8}{|c|}{DOB} \\ \hline
+        \textbf{Pets} & & \multicolumn{8}{|c|}{Born} \\ \hline
         & & $\hdots$ & 1985 & 1986 & 1987 & 1988 & 1989 & $\hdots$ & Sum \\ \hline
         \multirow{7}{*}{Height}
         & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ & \vdots \\
@@ -156,7 +183,7 @@
         & 168 & $\hdots$ & 326 & 363 & 193 & 350 & 422 & $\hdots$ & 10913 \\
         & 169 & $\hdots$ & 438 & 456 & 550 & 385 & 412 & $\hdots$ & 11347 \\
         & \vdots & $\ddots$ & \vdots & \vdots & \vdots & \vdots & \vdots & $\ddots$ & \vdots \\
-        & Sum & $\hdots$ & 8121 & \textbf{8255} & \textbf{8206} & \textbf{8820} & 8026 & $\hdots$ & 202169 \\
+        & Sum & $\hdots$ & 8121 & \graycell 8255 & \graycell 8206  & \graycell 8820 & 8026 & $\hdots$ & 202169 \\
         \hline
         \end{tabular}
     \end{table}
@@ -174,6 +201,7 @@
 
 \begin{figure}
     \centering
+    \pause
     \subfigure{
     \begin{tabular}{ | l | l | l |}
         \hline
@@ -184,6 +212,7 @@
 
     }
     \subfigure{=}
+    \pause
     \subfigure{
     \begin{tabular}{ | l | l | l |}
         \hline
@@ -192,6 +221,7 @@
          & & \\ \hline
     \end{tabular}
     }
+    \pause
     \subfigure{-}
     \subfigure{
 
@@ -202,6 +232,7 @@
          & & \\ \hline
     \end{tabular}
     }
+    \pause
     \subfigure{-}
     \subfigure{
     \begin{tabular}{ | l | l | l |}
@@ -211,6 +242,7 @@
          & & \\ \hline
     \end{tabular}
     }
+    \pause
     \subfigure{+}
     \subfigure{
 
@@ -275,7 +307,96 @@ introduced two new tables
 \cite{Geffner99}
 \end{frame}
 
-\newcommand{\graycell}{\cellcolor[gray]{0.8}}
+\begin{frame}{Dynamic Data Cube}
+\begin{figure}
+    \centering
+    \subfigure{
+    Root:
+    \begin{tabular}{ | l l l l | l l l l |}
+        \hline
+         Q  &  &  &  11 &  R  &  &  & 15 \\
+         &  &  &  29 &  &  &  & 33 \\
+         &  &  &  40 &  &  &  & 48 \\
+         15 &  29 &  35 &  \textbf{51} &  16 &  35 &  \textbf{48} & 66 \\
+        \hline
+         S  &     &     &  10 & {\color{brown} \textbf{T}}  &    &    & 15 \\
+         &   &     &  \textbf{24} &    &    &  & 31 \\
+           &    &    & 42 &    &    &    & 47 \\
+        12 & 26 & 34 & 52 &  8 & 30 & 54 & 61 \\
+        \hline
+    \end{tabular}
+    }
+
+    {\color{brown} \textbf{T}}:
+    \subfigure{
+    \begin{tabular}{ | l l | l l |}
+        \hline
+         U &  7 &  {\color{blue} \textbf{V}} & 8 \\
+         4 &   \textbf{16} &  \textbf{12}{\color{red} *} & 15 \\
+        \hline
+        W & 10 & Z & 6 \\
+        4 & 14 & 12 & 16 \\
+        \hline
+    \end{tabular}
+    }
+    {\color{blue} \textbf{V}}:
+    \subfigure{
+    \begin{tabular}{ | l | l |}
+        \hline
+        7 & 1 \\
+        \hline
+        5{\color{red} *} & 2 \\
+        \hline
+    \end{tabular}
+    }
+\end{figure}
+\cite{Geffner00}
+\end{frame}
+\begin{frame}{Dynamic Data Cube}
+\begin{figure}
+    \centering
+    \subfigure{
+    Root:
+    \begin{tabular}{ | l l l l | l l l l |}
+        \hline
+         Q  &  &  &  11 &  R  &  &  & 15 \\
+         &  &  &  29 &  &  &  & 33 \\
+         &  &  &  40 &  &  &  & 48 \\
+         15 &  29 &  35 &  \textbf{51} &  16 &  35 &  \textbf{48} & 66 \\
+        \hline
+         S  &     &     &  10 & {\color{brown} \textbf{T}}  &    &    & 15 \\
+         &   &     &  \textbf{24} &    &    &  {\color{red} *} & 31 \\
+           &    &    & 42 &    &    &    & 47 \\
+        12 & 26 & 34 & 52 &  8 & 30 & 54 & 61 \\
+        \hline
+    \end{tabular}
+    }
+
+    {\color{brown} \textbf{T}}:
+    \subfigure{
+    \begin{tabular}{ | l l | l l |}
+        \hline
+         U &  7 &  {\color{blue} \textbf{V}} & 8 \\
+         4 &   \textbf{16} &  \textbf{12}{\color{red} *} & 15 \\
+        \hline
+        W & 10 & Z & 6 \\
+        4 & 14 & 12 & 16 \\
+        \hline
+    \end{tabular}
+    }
+    {\color{blue} \textbf{V}}:
+    \subfigure{
+    \begin{tabular}{ | l | l |}
+        \hline
+        7 & 1 \\
+        \hline
+        5{\color{red} *} & 2 \\
+        \hline
+    \end{tabular}
+    }
+\end{figure}
+\cite{Geffner00}
+\end{frame}
 
 \begin{frame}{Dynamic Data Cube}
 \begin{figure}
